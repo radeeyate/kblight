@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ECTOOLURL="https://gitlab.howett.net/DHowett/ectool/-/jobs/890/artifacts/download?file_type=archive"
+
 if [[ "$EUID" -ne 0 ]]; then
   echo "This script must be run as root. Please use sudo."
   exit 1
