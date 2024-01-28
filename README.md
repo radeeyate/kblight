@@ -56,7 +56,7 @@ Available commands:
 * **help:** Displays this help message.
 * **version:** Displays the version information of kblight.
 
-**## Examples**
+## Examples
 
 * Turn off the keyboard backlight:
 
