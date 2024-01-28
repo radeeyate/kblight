@@ -19,5 +19,6 @@ fi
 
 echo "Installing kblight to /usr/local/bin"
 curl -o /usr/local/bin/kblight "https://raw.githubusercontent.com/radeeyate/kblight/master/kblight"
+chmod +x /usr/local/bin/kblight
 echo "Done... exiting"
 exit 0
