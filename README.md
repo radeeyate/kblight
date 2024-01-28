@@ -79,7 +79,7 @@ Available commands:
 ## Notes
 
 * This script requires root privileges to run.
-* It relies on the `ectool` utility to interact with the Framework Laptop 13 embedded controlled. If `ectool` is not found, the binary will be downloaded automatically into `/usr/local/bin`.
+* It relies on the `ectool` utility to interact with the Framework Laptop 13 embedded controller. If `ectool` is not found, the binary will be downloaded automatically into `/usr/local/bin`.
 
 ## Contributing
 
