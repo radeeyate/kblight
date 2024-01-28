@@ -17,7 +17,7 @@ Choose one of the following installation methods:
    1. Download kblight script:
 
       ```bash
-      curl -LO https://raw.githubusercontent.com/radi8/kblight/main/kblight
+      curl -LO https://raw.githubusercontent.com/radeeyate/kblight/main/kblight
       ```
 
    2. Make it executable:
