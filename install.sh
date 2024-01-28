@@ -19,6 +19,7 @@ fi
 
 echo "Installing kblight to /usr/local/bin"
 curl -o /usr/local/bin/kblight "https://raw.githubusercontent.com/radeeyate/kblight/master/kblight"
+chown "$(logname)":"$(logname)" /usr/local/bin/kblight
 chmod +x /usr/local/bin/kblight
-echo "Done... exiting"
+echo "You can now use kblight. See all options with \"sudo kblight help\""
 exit 0

@@ -9,7 +9,7 @@ Choose one of the following installation methods:
 1. Automatic installation using wget:
 
    ```bash
-   wget -qO- https://raw.githubusercontent.com/radeeyate/kblight/main/install.sh | bash
+   sudo bash <(curl -s https://raw.githubusercontent.com/radeeyate/kblight/main/install.sh)
    ```
 
 2. Manual installation:
