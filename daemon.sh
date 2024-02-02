@@ -36,7 +36,6 @@ while true; do
                     
                     NEW_CONTENT="$(cat /tmp/kblightd)"
                     if [[ "$NEW_CONTENT" != "$OLD_CONTENT" ]]; then
-                        echo "oop"
                         break
                     fi
                 done
@@ -51,14 +50,12 @@ while true; do
                         
                         NEW_CONTENT="$(cat /tmp/kblightd)"
                         if [[ "$NEW_CONTENT" != "$OLD_CONTENT" ]]; then
-                            echo "oop"
                             break
                         fi
                         sleep 0.013
                     done
                     NEW_CONTENT="$(cat /tmp/kblightd)"
                     if [[ "$NEW_CONTENT" != "$OLD_CONTENT" ]]; then
-                        echo "oop"
                         break
                     fi
                     for i in $(seq 100 -1 0); do

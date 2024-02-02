@@ -106,8 +106,8 @@ elif [[ "$1" == "effect" ]]; then
   shift
   # check if kblightd is running via systemctl, and if so, check which effect should be applied
   if systemctl is-active --quiet kblightd.service; then
-    if [[ "$1" == "breath" ]] | [[ "$1" == "strobe" ]]; then
-      echo "kblightd is running. Applying effect..."
+    if [[ "$1" == "breathe" ]] || [[ "$1" == "strobe" ]] || [[ "$1" == "none" ]]; then
+      echo "kblightd is running. Applying effect $1..."
       echo "effect $1" >| /tmp/kblightd
       exit 0
     fi
