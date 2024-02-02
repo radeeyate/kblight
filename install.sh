@@ -21,8 +21,11 @@ fi
 
 echo "Installing kblight to /usr/local/bin"
 curl -o /usr/local/bin/kblight "https://raw.githubusercontent.com/radeeyate/kblight/master/kblight"
+curl -o /usr/local/bin/kblightd.sh "https://raw.githubusercontent.com/radeeyate/kblight/master/daemon.sh"
 chown "$(logname)":"$(logname)" /usr/local/bin/kblight
 chmod +x /usr/local/bin/kblight
+chmod +x /usr/local/bin/kblightd.sh
+
 
 echo "[Unit]
 Description=Keyboard backlight daemon
