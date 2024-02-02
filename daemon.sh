@@ -22,10 +22,7 @@ while true; do
             if [[ "$NEW_CONTENT" =~ "effect strobe" ]]; then
                 echo "Strobe effect detected"
                 while true; do
-                    
-                    kblight set 0 >/dev/null
-
-                    if [[ "$?" -ne 0 ]]; then
+                    if ! kblight set 0 >/dev/null; then
                         echo "An error occured while trying to apply effect: strobe."
                         exit 1
                     fi

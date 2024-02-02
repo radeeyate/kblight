@@ -3,6 +3,8 @@
 ECTOOLURL="https://gitlab.howett.net/DHowett/ectool/-/jobs/890/artifacts/download?file_type=archive"
 VERSION="1.0"
 OPTIONS=("set" "get" "help" "version" "effect")
+NO_FORMAT="\033[0m"
+F_BOLD="\033[1m"
 
 # check for root
 if [[ "$EUID" -ne 0 ]]; then
@@ -58,8 +60,13 @@ elif [[ "$1" == "version" ]]; then
   echo "License: MIT"
   exit 0
 elif [[ "$1" == "get" ]]; then
-  percentage=$(echo "$(ectool pwmgetkblight)" | grep -o -E '[0-9]+')
-  if [[ "$?" -eq 0 ]]; then
+  if [[ $(ectool pwmgetkblight) =~ "disabled" ]]; then
+    echo "The keyboard backlight is currently disabled."
+    exit 0
+  fi
+
+  percentage=$(ectool pwmgetkblight | grep -o -E '[0-9]+')
+  if [[ "$(ectool pwmgetkblight)" -eq 0 ]]; then
     echo "Current keyboard backlight percentage is $percentage%"
   else
     echo "An error occured when getting the current backlight percentage"
@@ -96,9 +103,8 @@ elif [[ "$1" == "set" ]]; then
   fi
 
   echo "Setting keyboard backlight brightness to $brightness%"
-  ectool pwmsetkblight "$brightness" >/dev/null
 
-  if [[ "$?" -ne 0 ]]; then
+  if ! ectool pwmsetkblight "$brightness" >/dev/null; then
     echo "An error occured when setting your brightness to $brightness."
     exit 1
   fi
@@ -108,11 +114,11 @@ elif [[ "$1" == "effect" ]]; then
   if systemctl is-active --quiet kblightd.service; then
     if [[ "$1" == "breathe" ]] || [[ "$1" == "strobe" ]] || [[ "$1" == "none" ]]; then
       echo "kblightd is running. Applying effect $1..."
-      echo "effect $1" >| /tmp/kblightd
+      echo "effect $1" >|/tmp/kblightd
       exit 0
     fi
   else
-    echo "kblightd is not running. Please start it with sudo systemctl start kblightd."
+    echo -e "kblightd is not running. Please start it with ${F_BOLD}sudo systemctl start kblightd${NO_FORMAT}."
     echo "Running normally for now."
   fi
 
@@ -120,9 +126,7 @@ elif [[ "$1" == "effect" ]]; then
     echo "Press Ctrl+C to stop strobe effect."
 
     while true; do
-      kblight set 0 >/dev/null
-
-      if [[ "$?" -ne 0 ]]; then
+      if ! kblight set 0 >/dev/null; then
         echo "An error occured while trying to apply effect: strobe."
         exit 1
       fi
@@ -134,8 +138,7 @@ elif [[ "$1" == "effect" ]]; then
     echo "Press Ctrl+C to stop breathe effect."
     while true; do
       for i in $(seq 0 1 100); do
-        kblight set "$i" >/dev/null
-        if [[ "$?" -ne 0 ]]; then
+        if ! kblight set "$i" >/dev/null; then
           echo "An error occured while trying to apply effect: breathe."
           exit 1
         fi
