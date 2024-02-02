@@ -23,7 +23,7 @@ if ! command -v ectool &> /dev/null; then
 fi
 
 # check for correct usage with "set", "help" or "version"
-if [[ ! " ${OPTIONS[@]} " =~ " $1 " ]]; then
+if [[ ! " ${OPTIONS[*]} " =~  $1  ]]; then
   echo "Usage: kblight set <brightness>"
   echo "For help, run: kblight help"
   exit 1
