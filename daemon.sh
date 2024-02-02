@@ -63,7 +63,7 @@ while true; do
 
                 done
             else
-                echo "Other effect detected"
+                echo "Either effect set to none or unknown effect found."
             fi
         fi
     fi
