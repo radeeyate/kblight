@@ -10,7 +10,7 @@ if [[ "$EUID" -ne 0 ]]; then
   exit 1
 fi
 
-if ! command -v ectool &> /dev/null; then
+if ! command -v ectool &>/dev/null; then
   echo "ectool is not installed or was not found in your PATH"
   echo "Downloading ectool to /usr/local/bin..."
   mkdir -p /usr/local/bin
@@ -23,7 +23,7 @@ if ! command -v ectool &> /dev/null; then
 fi
 
 # check for correct usage with "set", "help" or "version"
-if [[ ! " ${OPTIONS[*]} " =~  $1  ]]; then
+if [[ ! " ${OPTIONS[*]} " =~ $1 ]]; then
   echo "Usage: kblight set <brightness>"
   echo "For help, run: kblight help"
   exit 1
@@ -96,7 +96,7 @@ elif [[ "$1" == "set" ]]; then
   fi
 
   echo "Setting keyboard backlight brightness to $brightness%"
-  ectool pwmsetkblight "$brightness" > /dev/null
+  ectool pwmsetkblight "$brightness" >/dev/null
 
   if [[ "$?" -ne 0 ]]; then
     echo "An error occured when setting your brightness to $brightness."
@@ -104,28 +104,37 @@ elif [[ "$1" == "set" ]]; then
   fi
 elif [[ "$1" == "effect" ]]; then
   shift
+  # check if kblightd is running via systemctl, and if so, check which effect should be applied
+  if systemctl is-active --quiet kblightd.service; then
+    if [[ "$1" == "breath" ]] | [[ "$1" == "strobe" ]]; then
+      echo "kblightd is running. Applying effect..."
+      echo "effect $1" >| /tmp/kblightd
+      exit 0
+    fi
+  else
+    echo "kblightd is not running. Please start it with sudo systemctl start kblightd."
+    echo "Running normally for now."
+  fi
+
   if [[ "$1" == "strobe" ]]; then
     echo "Press Ctrl+C to stop strobe effect."
 
     while true; do
-      kblight set 0 > /dev/null
+      kblight set 0 >/dev/null
 
       if [[ "$?" -ne 0 ]]; then
         echo "An error occured while trying to apply effect: strobe."
         exit 1
       fi
-
       sleep 0.04
-      kblight set 100 > /dev/null
+      kblight set 100 >/dev/null
       sleep 0.04
     done
   elif [[ "$1" == "breathe" ]]; then
     echo "Press Ctrl+C to stop breathe effect."
-
     while true; do
       for i in $(seq 0 1 100); do
-        kblight set "$i" > /dev/null
-
+        kblight set "$i" >/dev/null
         if [[ "$?" -ne 0 ]]; then
           echo "An error occured while trying to apply effect: breathe."
           exit 1
@@ -134,7 +143,7 @@ elif [[ "$1" == "effect" ]]; then
         sleep 0.013
       done
       for i in $(seq 100 -1 0); do
-        kblight set "$i" > /dev/null
+        kblight set "$i" >/dev/null
         sleep 0.013
       done
       sleep 1.7

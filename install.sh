@@ -23,5 +23,23 @@ echo "Installing kblight to /usr/local/bin"
 curl -o /usr/local/bin/kblight "https://raw.githubusercontent.com/radeeyate/kblight/master/kblight"
 chown "$(logname)":"$(logname)" /usr/local/bin/kblight
 chmod +x /usr/local/bin/kblight
+
+echo "[Unit]
+Description=Keyboard backlight daemon
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/bin/kblightd.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target" > /etc/systemd/system/kblightd.service
+
+systemctl daemon-reload
+systemctl enable kblightd
+systemctl start kblightd
+
 echo "You can now use kblight. See all options with \"sudo kblight help\""
 exit 0
